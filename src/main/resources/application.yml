@@ -1,0 +1,23 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: api-gateway
+
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:local}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, metrics
+
+logging:
+  level:
+    root: INFO
+    in.respondlyai: DEBUG
+    org.springframework.cloud.gateway: DEBUG
+    org.springframework.security: WARN
+    org.springframework.web.server.adapter.HttpWebHandlerAdapter: WARN
