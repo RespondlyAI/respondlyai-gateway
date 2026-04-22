@@ -8,6 +8,7 @@ import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
 import reactor.core.publisher.Mono;
+import java.net.InetSocketAddress;
 
 @Slf4j
 @Component
@@ -22,8 +23,12 @@ public class ReactiveRequestLoggingFilter implements WebFilter {
         String path = exchange.getRequest().getURI().getPath();
         String query = exchange.getRequest().getURI().getQuery();
         String queryString = query != null ? "?" + query : "";
-        String remoteAddr = exchange.getRequest().getRemoteAddress() != null ?
-                exchange.getRequest().getRemoteAddress().getAddress().getHostAddress() : "unknown";
+
+        String remoteAddr = "unknown";
+        InetSocketAddress remoteAddress = exchange.getRequest().getRemoteAddress();
+        if (remoteAddress != null) {
+            remoteAddr = remoteAddress.getHostString();
+        }
 
         log.info("--> {} {}{} from [{}]", method, path, queryString, remoteAddr);
 
