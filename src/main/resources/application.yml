@@ -12,24 +12,35 @@ spring:
   cloud:
     gateway:
       routes:
-        # Route for the Auth Service
         - id: auth-service
-          # Default to the Kubernetes internal DNS!
           uri: ${AUTH_SERVICE_URL:http://auth-service.respondlyai.svc.cluster.local:8080}
           predicates:
             - Path=/api/v1/auth/**
+            
+        - id: auth-docs
+          uri: ${AUTH_SERVICE_URL:http://auth-service.respondlyai.svc.cluster.local:8080}
+          predicates:
+            - Path=/docs/auth
+          filters:
+            - RewritePath=/docs/auth, /v3/api-docs
 
-        # 2. Route for the Organization Service
         - id: org-service
           uri: ${ORG_SERVICE_URL:http://org-service.respondlyai.svc.cluster.local:8080}
           predicates:
             - Path=/api/v1/org/**
 
+        - id: org-docs
+          uri: ${ORG_SERVICE_URL:http://org-service.respondlyai.svc.cluster.local:8080}
+          predicates:
+            - Path=/docs/org
+          filters:
+            - RewritePath=/docs/org, /v3/api-docs
+
 application:
   security:
     jwt:
       secret-key: ${JWT_SECRET_KEY:404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970}
-    public-paths: /api/v1/auth, /actuator/health, /swagger-ui, /v3/api-docs
+    public-paths: /api/v1/auth, /actuator/health, /swagger-ui, /v3/api-docs, /docs
 
 management:
   endpoints:
@@ -47,11 +58,9 @@ logging:
 
 springdoc:
   swagger-ui:
-    # The URL where you will access the central Swagger UI
     path: /swagger-ui.html
     urls:
       - name: Auth API
-        # The Gateway will route this internal request to the Auth Service via your defined route
-        url: /api/v1/auth/v3/api-docs
+        url: /docs/auth
       - name: Organization API
-        url: /api/v1/org/v3/api-docs
+        url: /docs/org
