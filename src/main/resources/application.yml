@@ -20,9 +20,9 @@ spring:
         - id: auth-docs
           uri: ${AUTH_SERVICE_URL:http://auth-service.respondlyai.svc.cluster.local:8080}
           predicates:
-            - Path=/docs/auth
+            - Path=/v3/api-docs/auth
           filters:
-            - RewritePath=/docs/auth, /v3/api-docs
+            - SetPath=/v3/api-docs
 
         - id: org-service
           uri: ${ORG_SERVICE_URL:http://org-service.respondlyai.svc.cluster.local:8080}
@@ -32,15 +32,15 @@ spring:
         - id: org-docs
           uri: ${ORG_SERVICE_URL:http://org-service.respondlyai.svc.cluster.local:8080}
           predicates:
-            - Path=/docs/org
+            - Path=/v3/api-docs/org
           filters:
-            - RewritePath=/docs/org, /v3/api-docs
+            - SetPath=/v3/api-docs
 
 application:
   security:
     jwt:
       secret-key: ${JWT_SECRET_KEY:404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970}
-    public-paths: /api/v1/auth, /actuator/health, /api/docs, /swagger-ui, /v3/api-docs, /docs
+    public-paths: /api/v1/auth, /actuator/health, /api/docs, /swagger-ui, /v3/api-docs, /v3/api-docs/auth, /v3/api-docs/org
 
 management:
   endpoints:
@@ -61,6 +61,7 @@ springdoc:
     path: /api/docs
     urls:
       - name: Auth API
-        url: /docs/auth
+        url: /v3/api-docs/auth
       - name: Organization API
-        url: /docs/org
+        url: /v3/api-docs/org
+
