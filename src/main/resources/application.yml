@@ -47,3 +47,14 @@ logging:
     org.springframework.cloud.gateway: DEBUG
     org.springframework.security: WARN
     org.springframework.web.server.adapter.HttpWebHandlerAdapter: WARN
+
+springdoc:
+  swagger-ui:
+    # The URL where you will access the central Swagger UI
+    path: /swagger-ui.html
+    urls:
+      - name: Auth API
+        # The Gateway will route this internal request to the Auth Service via your defined route
+        url: /api/v1/auth/v3/api-docs
+      - name: Organization API
+        url: /api/v1/org/v3/api-docs
