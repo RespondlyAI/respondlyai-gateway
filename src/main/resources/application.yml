@@ -16,27 +16,6 @@ spring:
             allowedMethods: "*"
             allowedHeaders: "*"
             allowCredentials: true
-      routes:
-        - id: auth-service
-          uri: http://auth-service:8080
-          predicates:
-            - Path=/api/v1/auth/**
-        - id: org-service
-          uri: http://org-service:8080
-          predicates:
-            - Path=/api/v1/org/**
-        - id: auth-docs
-          uri: http://auth-service:8080
-          predicates:
-            - Path=/swagger-docs/auth
-          filters:
-            - RewritePath=/swagger-docs/auth, /v3/api-docs
-        - id: org-docs
-          uri: http://org-service:8080
-          predicates:
-            - Path=/swagger-docs/org
-          filters:
-            - RewritePath=/swagger-docs/org, /v3/api-docs
 
 application:
   security:
